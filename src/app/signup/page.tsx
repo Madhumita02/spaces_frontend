@@ -26,7 +26,7 @@ export default function SignupPage() {
     }
 
     try {
-      const res = await fetch('http://localhost:3000/auth/signup', {
+      const res = await fetch('https://spaces-backend-wrmn.onrender.com/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, password, role }),

@@ -51,7 +51,7 @@ export default function HahaPage() {
             fontSize: "1.1rem",
           }}
         >
-          (Ps.m Why be a staff when you can be a consumer?) 
+          (Ps. Why be a staff when you can be a consumer?) 
         </Typography>
         <Button
           variant="contained"

@@ -58,7 +58,7 @@ export default function BrandOwnerSpacesPage() {
   const [imageIndexes, setImageIndexes] = useState<{ [id: string]: number }>({});
 
   useEffect(() => {
-    fetch("http://localhost:3000/spaces")
+    fetch("https://spaces-backend-wrmn.onrender.com/spaces")
       .then((res) => res.json())
       .then((data) => {
         setSpaces(data);
@@ -96,7 +96,7 @@ export default function BrandOwnerSpacesPage() {
   const getImageUrl = (img: string) => {
     if (!img) return "";
     if (img.startsWith("http") || img.startsWith("/assets/")) return img;
-    return "http://localhost:3000/uploads/" + img.replace(/^\/+/, "");
+    return "https://spaces-backend-wrmn.onrender.com/uploads/" + img.replace(/^\/+/, "");
   };
 
   return (

@@ -101,7 +101,7 @@ export default function BrandOwnerLanding() {
     images.forEach(file => formData.append('files', file));
 
     try {
-      const res = await fetch('http://localhost:3000/spaces', {
+      const res = await fetch('https://spaces-backend-wrmn.onrender.com/spaces', {
         method: 'POST',
         body: formData,
       });
