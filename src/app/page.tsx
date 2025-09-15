@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { Box, Button, Typography, Card, CardMedia, CardContent } from '@mui/material';
-import Grid from '@mui/material/Grid';
 
 const spaces = [
   {
@@ -101,36 +100,52 @@ export default function DashboardHome() {
       </Box>
 
       {/* Spaces Cards */}
-      <Box sx={{ px: { xs: 2, md: 8 }, pb: 6 }}>
-        <Grid container spacing={4} justifyContent="center" component="div">
-          {spaces.map((space, idx) => (
-            <Grid item xs={12} md={6} key={idx} component="div">
-              <Card sx={{ boxShadow: 4, borderRadius: 3 }}>
-                <CardMedia
-                  component="img"
-                  height="180"
-                  image={space.image}
-                  alt={space.name}
-                  sx={{ objectFit: 'cover' }}
-                />
-                <CardContent>
-                  <Typography
-                    variant="h6"
-                    sx={{ color: '#8C52FF', fontWeight: 700, fontFamily: 'Blinker, sans-serif' }}
-                  >
-                    {space.name}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    sx={{ color: '#555', fontFamily: 'Blinker, sans-serif' }}
-                  >
-                    {space.description}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
+      <Box
+        sx={{
+          px: { xs: 2, md: 8 },
+          pb: 6,
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+          gap: 4,
+        }}
+      >
+        {spaces.map((space, idx) => (
+          <Box
+            key={idx}
+            sx={{
+              width: { xs: '100%', md: '45%' },
+              minWidth: 280,
+              maxWidth: 450,
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            <Card sx={{ boxShadow: 4, borderRadius: 3, width: '100%' }}>
+              <CardMedia
+                component="img"
+                height="180"
+                image={space.image}
+                alt={space.name}
+                sx={{ objectFit: 'cover' }}
+              />
+              <CardContent>
+                <Typography
+                  variant="h6"
+                  sx={{ color: '#8C52FF', fontWeight: 700, fontFamily: 'Blinker, sans-serif' }}
+                >
+                  {space.name}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  sx={{ color: '#555', fontFamily: 'Blinker, sans-serif' }}
+                >
+                  {space.description}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Box>
+        ))}
       </Box>
     </Box>
   );

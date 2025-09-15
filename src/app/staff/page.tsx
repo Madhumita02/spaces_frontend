@@ -41,7 +41,7 @@ export default function HahaPage() {
             mb: 2,
           }}
         >
-          Sorry, I didn't have time 😢
+          Sorry, I didn&apos;t have time 😢
         </Typography>
         <Typography
           sx={{
@@ -51,7 +51,7 @@ export default function HahaPage() {
             fontSize: "1.1rem",
           }}
         >
-          (Ps. Why be a staff when you can be a consumer?) 
+          (Ps.m Why be a staff when you can be a consumer?) 
         </Typography>
         <Button
           variant="contained"

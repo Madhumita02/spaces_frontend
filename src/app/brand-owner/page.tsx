@@ -12,7 +12,6 @@ import {
   InputLabel,
   FormControl,
   OutlinedInput,
-  Grid,
   Divider,
 } from '@mui/material';
 import { Info, People, Star, AttachMoney, PhotoCamera, AddCircle } from '@mui/icons-material';
@@ -68,60 +67,64 @@ export default function BrandOwnerLanding() {
     }
   };
 
-  const handleAmenitiesChange = (event: any) => {
-    const { value } = event.target;
-    setAmenities(typeof value === 'string' ? value.split(',') : value);
+  const handleAmenitiesChange = (
+    event: React.ChangeEvent<HTMLInputElement> | { target: { value: unknown } }
+  ) => {
+    const value = event.target.value;
+    setAmenities(typeof value === 'string' ? value.split(',') : (value as string[]));
   };
 
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  const formData = new FormData();
-  formData.append('title', title);
-  formData.append('description', description);
-  formData.append('category', category);
-  formData.append('address', address);
-  formData.append('mapsLink', mapsLink);
-  formData.append('city', city);
-  formData.append('state', state);
-  formData.append('postalCode', postalCode);
-  formData.append('capacity', String(Number(capacity)));
-  formData.append('seating', seating);
-  formData.append('areaSize', areaSize);
-  formData.append('amenities', JSON.stringify(amenities));
-  formData.append('hourlyRate', String(Number(hourlyRate)));
-  formData.append('dailyRate', String(Number(dailyRate)));
-  formData.append('virtualTour', virtualTour);
-  formData.append('houseRules', houseRules);
-  formData.append('availability', availability);
-  formData.append('contact', contact);
-  formData.append('tags', tags);
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('category', category);
+    formData.append('address', address);
+    formData.append('mapsLink', mapsLink);
+    formData.append('city', city);
+    formData.append('state', state);
+    formData.append('postalCode', postalCode);
+    formData.append('capacity', String(Number(capacity)));
+    formData.append('seating', seating);
+    formData.append('areaSize', areaSize);
+    formData.append('amenities', JSON.stringify(amenities));
+    formData.append('hourlyRate', String(Number(hourlyRate)));
+    formData.append('dailyRate', String(Number(dailyRate)));
+    formData.append('virtualTour', virtualTour);
+    formData.append('houseRules', houseRules);
+    formData.append('availability', availability);
+    formData.append('contact', contact);
+    formData.append('tags', tags);
 
-  images.forEach(file => formData.append('files', file));
+    images.forEach(file => formData.append('files', file));
 
-  try {
-    const res = await fetch('http://localhost:3000/spaces', {
-      method: 'POST',
-      body: formData, // No auth header needed
-    });
+    try {
+      const res = await fetch('http://localhost:3000/spaces', {
+        method: 'POST',
+        body: formData,
+      });
 
-    if (!res.ok) {
-      const errorData = await res.json().catch(() => ({ message: res.statusText }));
-      console.error('Backend error:', errorData);
-      throw new Error(errorData.message || 'Failed to add space');
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({ message: res.statusText }));
+        console.error('Backend error:', errorData);
+        throw new Error(errorData.message || 'Failed to add space');
+      }
+
+      const data = await res.json();
+      console.log('Space added successfully:', data);
+      alert('Space added successfully!');
+      window.location.href = '/brand-owner/haha';
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        alert(err.message);
+      } else {
+        alert('An unknown error occurred');
+      }
+      console.error('Error while submitting space:', err);
     }
-
-    const data = await res.json();
-    console.log('Space added successfully:', data);
-    alert('Space added successfully!');
-    window.location.href = 'haha';
-  } catch (err: any) {
-    console.error('Error while submitting space:', err);
-    alert(err.message);
-  }
-};
-
-
+  };
 
   return (
     <Box
@@ -187,6 +190,7 @@ const handleSubmit = async (e: React.FormEvent) => {
               Basic Information
             </Typography>
           </Box>
+
           <TextField
             label="Name / Title"
             variant="outlined"
@@ -197,6 +201,7 @@ const handleSubmit = async (e: React.FormEvent) => {
             sx={{ mb: 2, fontFamily: 'Blinker, sans-serif' }}
             InputLabelProps={{ style: { fontFamily: 'Blinker, sans-serif' } }}
           />
+
           <TextField
             label="Description"
             variant="outlined"
@@ -208,12 +213,12 @@ const handleSubmit = async (e: React.FormEvent) => {
             sx={{ mb: 2, fontFamily: 'Blinker, sans-serif' }}
             InputLabelProps={{ style: { fontFamily: 'Blinker, sans-serif' } }}
           />
+
           <FormControl fullWidth sx={{ mb: 2 }}>
             <InputLabel sx={{ fontFamily: 'Blinker, sans-serif' }}>Category / Type</InputLabel>
             <Select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              label="Category / Type"
               input={<OutlinedInput label="Category / Type" />}
               sx={{ fontFamily: 'Blinker, sans-serif' }}
               required
@@ -225,6 +230,7 @@ const handleSubmit = async (e: React.FormEvent) => {
               ))}
             </Select>
           </FormControl>
+
           <TextField
             label="Address / Location"
             variant="outlined"
@@ -235,6 +241,7 @@ const handleSubmit = async (e: React.FormEvent) => {
             sx={{ mb: 2, fontFamily: 'Blinker, sans-serif' }}
             InputLabelProps={{ style: { fontFamily: 'Blinker, sans-serif' } }}
           />
+
           <TextField
             label="Google Maps Link"
             variant="outlined"
@@ -244,41 +251,13 @@ const handleSubmit = async (e: React.FormEvent) => {
             sx={{ mb: 2, fontFamily: 'Blinker, sans-serif' }}
             InputLabelProps={{ style: { fontFamily: 'Blinker, sans-serif' } }}
           />
-          <Grid container spacing={2} sx={{ mb: 2 }} component="div">
-            <Grid item xs={12} sm={4} component="div">
-              <TextField
-                label="City"
-                variant="outlined"
-                fullWidth
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-                sx={{ fontFamily: 'Blinker, sans-serif' }}
-                InputLabelProps={{ style: { fontFamily: 'Blinker, sans-serif' } }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={4} component="div">
-              <TextField
-                label="State"
-                variant="outlined"
-                fullWidth
-                value={state}
-                onChange={(e) => setState(e.target.value)}
-                sx={{ fontFamily: 'Blinker, sans-serif' }}
-                InputLabelProps={{ style: { fontFamily: 'Blinker, sans-serif' } }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={4} component="div">
-              <TextField
-                label="Postal Code"
-                variant="outlined"
-                fullWidth
-                value={postalCode}
-                onChange={(e) => setPostalCode(e.target.value)}
-                sx={{ fontFamily: 'Blinker, sans-serif' }}
-                InputLabelProps={{ style: { fontFamily: 'Blinker, sans-serif' } }}
-              />
-            </Grid>
-          </Grid>
+
+          {/* City, State, Postal */}
+          <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap' }}>
+            <TextField label="City" variant="outlined" fullWidth value={city} onChange={(e) => setCity(e.target.value)} sx={{ flex: 1, fontFamily: 'Blinker, sans-serif' }} />
+            <TextField label="State" variant="outlined" fullWidth value={state} onChange={(e) => setState(e.target.value)} sx={{ flex: 1, fontFamily: 'Blinker, sans-serif' }} />
+            <TextField label="Postal Code" variant="outlined" fullWidth value={postalCode} onChange={(e) => setPostalCode(e.target.value)} sx={{ flex: 1, fontFamily: 'Blinker, sans-serif' }} />
+          </Box>
 
           <Divider sx={{ my: 3 }} />
 
@@ -289,32 +268,12 @@ const handleSubmit = async (e: React.FormEvent) => {
               Capacity & Layout
             </Typography>
           </Box>
-          <Grid container spacing={2} sx={{ mb: 2 }} component="div">
-            <Grid item xs={12} sm={6} component="div">
-              <TextField
-                label="Capacity (number of people)"
-                variant="outlined"
-                fullWidth
-                required
-                type="number"
-                value={capacity}
-                onChange={(e) => setCapacity(e.target.value)}
-                sx={{ fontFamily: 'Blinker, sans-serif' }}
-                InputLabelProps={{ style: { fontFamily: 'Blinker, sans-serif' } }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} component="div">
-              <TextField
-                label="Seating Type / Layout"
-                variant="outlined"
-                fullWidth
-                value={seating}
-                onChange={(e) => setSeating(e.target.value)}
-                sx={{ fontFamily: 'Blinker, sans-serif' }}
-                InputLabelProps={{ style: { fontFamily: 'Blinker, sans-serif' } }}
-              />
-            </Grid>
-          </Grid>
+
+          <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap' }}>
+            <TextField label="Capacity (number of people)" variant="outlined" fullWidth required type="number" value={capacity} onChange={(e) => setCapacity(e.target.value)} sx={{ flex: 1, fontFamily: 'Blinker, sans-serif' }} />
+            <TextField label="Seating Type / Layout" variant="outlined" fullWidth value={seating} onChange={(e) => setSeating(e.target.value)} sx={{ flex: 1, fontFamily: 'Blinker, sans-serif' }} />
+          </Box>
+
           <TextField
             label="Floor / Area Size (sq ft or sq m)"
             variant="outlined"
@@ -327,13 +286,14 @@ const handleSubmit = async (e: React.FormEvent) => {
 
           <Divider sx={{ my: 3 }} />
 
-          {/* Amenities & Features */}
+          {/* Amenities */}
           <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
             <Star sx={{ color: '#8C52FF', mr: 1 }} />
             <Typography variant="h6" sx={{ color: '#8C52FF', fontWeight: 700 }}>
               Amenities & Features
             </Typography>
           </Box>
+
           <FormControl fullWidth sx={{ mb: 2 }}>
             <InputLabel sx={{ fontFamily: 'Blinker, sans-serif' }}>Amenities</InputLabel>
             <Select
@@ -361,38 +321,18 @@ const handleSubmit = async (e: React.FormEvent) => {
 
           <Divider sx={{ my: 3 }} />
 
-          {/* Pricing & Booking */}
+          {/* Pricing */}
           <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
             <AttachMoney sx={{ color: '#8C52FF', mr: 1 }} />
             <Typography variant="h6" sx={{ color: '#8C52FF', fontWeight: 700 }}>
               Pricing & Booking
             </Typography>
           </Box>
-          <Grid container spacing={2} sx={{ mb: 2 }} component="div">
-            <Grid item xs={12} sm={6} component="div">
-              <TextField
-                label="Hourly Rate"
-                variant="outlined"
-                fullWidth
-                required
-                value={hourlyRate}
-                onChange={(e) => setHourlyRate(e.target.value)}
-                sx={{ fontFamily: 'Blinker, sans-serif' }}
-                InputLabelProps={{ style: { fontFamily: 'Blinker, sans-serif' } }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} component="div">
-              <TextField
-                label="Daily Rate / Packages"
-                variant="outlined"
-                fullWidth
-                value={dailyRate}
-                onChange={(e) => setDailyRate(e.target.value)}
-                sx={{ fontFamily: 'Blinker, sans-serif' }}
-                InputLabelProps={{ style: { fontFamily: 'Blinker, sans-serif' } }}
-              />
-            </Grid>
-          </Grid>
+
+          <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap' }}>
+            <TextField label="Hourly Rate" variant="outlined" fullWidth required value={hourlyRate} onChange={(e) => setHourlyRate(e.target.value)} sx={{ flex: 1, fontFamily: 'Blinker, sans-serif' }} />
+            <TextField label="Daily Rate / Packages" variant="outlined" fullWidth value={dailyRate} onChange={(e) => setDailyRate(e.target.value)} sx={{ flex: 1, fontFamily: 'Blinker, sans-serif' }} />
+          </Box>
 
           <Divider sx={{ my: 3 }} />
 
@@ -403,6 +343,7 @@ const handleSubmit = async (e: React.FormEvent) => {
               Media
             </Typography>
           </Box>
+
           <Button
             variant="outlined"
             component="label"
@@ -418,14 +359,9 @@ const handleSubmit = async (e: React.FormEvent) => {
             }}
           >
             Upload Images
-            <input
-              type="file"
-              multiple
-              hidden
-              accept="image/*"
-              onChange={handleImagesChange}
-            />
+            <input type="file" multiple hidden accept="image/*" onChange={handleImagesChange} />
           </Button>
+
           {images.length > 0 && (
             <Box sx={{ mb: 2 }}>
               <Typography sx={{ fontFamily: 'Blinker, sans-serif', color: '#555', mb: 1 }}>
@@ -440,6 +376,7 @@ const handleSubmit = async (e: React.FormEvent) => {
               </Box>
             </Box>
           )}
+
           <TextField
             label="360° Tour / Virtual Tour Link (optional)"
             variant="outlined"
@@ -459,6 +396,7 @@ const handleSubmit = async (e: React.FormEvent) => {
               Additional Info / Extras
             </Typography>
           </Box>
+
           <TextField
             label="House Rules / Policies"
             variant="outlined"
@@ -470,6 +408,7 @@ const handleSubmit = async (e: React.FormEvent) => {
             sx={{ mb: 2, fontFamily: 'Blinker, sans-serif' }}
             InputLabelProps={{ style: { fontFamily: 'Blinker, sans-serif' } }}
           />
+
           <TextField
             label="Availability Schedule (open hours, blocked dates)"
             variant="outlined"
@@ -479,6 +418,7 @@ const handleSubmit = async (e: React.FormEvent) => {
             sx={{ mb: 2, fontFamily: 'Blinker, sans-serif' }}
             InputLabelProps={{ style: { fontFamily: 'Blinker, sans-serif' } }}
           />
+
           <TextField
             label="Contact Info (phone/email)"
             variant="outlined"
@@ -489,6 +429,7 @@ const handleSubmit = async (e: React.FormEvent) => {
             sx={{ mb: 2, fontFamily: 'Blinker, sans-serif' }}
             InputLabelProps={{ style: { fontFamily: 'Blinker, sans-serif' } }}
           />
+
           <TextField
             label="Tags / Keywords (for search & filtering)"
             variant="outlined"

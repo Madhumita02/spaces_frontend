@@ -5,7 +5,6 @@ import {
   Card,
   CardContent,
   Chip,
-  Grid,
   IconButton,
   Typography,
 } from "@mui/material";
@@ -19,7 +18,6 @@ const BLINKER_FONT_LINK = (
   />
 );
 
-// Asset images mapping
 const assetImages: { [key: string]: string[] } = {
   "Fanpit Beach house": ["/assets/bh1.jpg", "/assets/bh2.jpg", "/assets/bh3.jpg"],
   "Loft house": ["/assets/lh1.jpg", "/assets/lh2.jpg", "/assets/lh3.jpg"],
@@ -88,7 +86,6 @@ export default function BrandOwnerSpacesPage() {
     }));
   };
 
-  // Helper to get images from assets if available
   const getSpaceImages = (space: Space): string[] => {
     if (assetImages[space.name]) {
       return assetImages[space.name];
@@ -96,7 +93,6 @@ export default function BrandOwnerSpacesPage() {
     return space.images || [];
   };
 
-  // Helper to get absolute image URL for uploaded images
   const getImageUrl = (img: string) => {
     if (!img) return "";
     if (img.startsWith("http") || img.startsWith("/assets/")) return img;
@@ -130,16 +126,25 @@ export default function BrandOwnerSpacesPage() {
             Loading spaces...
           </Typography>
         ) : (
-          <Grid container spacing={4} justifyContent="center">
+          <Box
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
+              gap: 4,
+            }}
+          >
             {spaces.map((space) => {
               const images = getSpaceImages(space);
               return (
-                <Grid
-                  item
-                  xs={12}
-                  sm={6}
+                <Box
                   key={space._id}
-                  sx={{ display: "flex", justifyContent: "center" }}
+                  sx={{
+                    flex: { xs: "1 1 100%", sm: "1 1 370px" },
+                    maxWidth: 370,
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
                 >
                   <Card
                     sx={{
@@ -147,7 +152,6 @@ export default function BrandOwnerSpacesPage() {
                       boxShadow: "0 4px 16px rgba(140,82,255,0.10)",
                       fontFamily: "Blinker, sans-serif",
                       overflow: "hidden",
-                      maxWidth: 370,
                       width: "100%",
                     }}
                   >
@@ -185,9 +189,7 @@ export default function BrandOwnerSpacesPage() {
                                   color: "#8C52FF",
                                   "&:hover": { background: "#e9e3ff" },
                                 }}
-                                onClick={() =>
-                                  handlePrevImage(space._id, images)
-                                }
+                                onClick={() => handlePrevImage(space._id, images)}
                               >
                                 <ArrowBackIosNewIcon />
                               </IconButton>
@@ -201,9 +203,7 @@ export default function BrandOwnerSpacesPage() {
                                   color: "#8C52FF",
                                   "&:hover": { background: "#e9e3ff" },
                                 }}
-                                onClick={() =>
-                                  handleNextImage(space._id, images)
-                                }
+                                onClick={() => handleNextImage(space._id, images)}
                               >
                                 <ArrowForwardIosIcon />
                               </IconButton>
@@ -320,10 +320,10 @@ export default function BrandOwnerSpacesPage() {
                       </a>
                     </CardContent>
                   </Card>
-                </Grid>
+                </Box>
               );
-              })}
-          </Grid>
+            })}
+          </Box>
         )}
       </Box>
     </>
